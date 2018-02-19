@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Play KBC With Me</string>
+    <string name="title_intro">Introduction Sound</string>
+    <string name="intro_1">Intro 1</string>
+    <string name="intro_2">Intro 2</string>
+    <string name="next_question">Next Question Sound</string>
+    <string name="suspense_1">Suspense 1</string>
+    <string name="suspense_2">Suspense 2</string>
+    <string name="suspense_3">Suspense 3</string>
+    <string name="suspense_4">Suspense 4</string>
+    <string name="lock">Lock </string>
+    <string name="correct_ans">Correct </string>
+    <string name="incorrect_ans">Incorrect </string>
+    <string name="wrong_answer">Wrong Answer</string>
+    <string name="dramatic_tone">Dramatic </string>
+    <string name="phone_a_friend">Phone A Friend</string>
+    <string name="kbc_hooter">Hooter</string>
+    <string name="title_suspense">Suspense Sound</string>
+    <string name="title_other">Other Sounds</string>
+    <string name="title_answer">Answer Related Sounds</string>
+</resources>
