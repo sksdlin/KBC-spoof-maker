@@ -115,7 +115,7 @@
     <TextView
         android:id="@+id/textView11"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="0"
         android:text="@string/title_suspense"
         android:textStyle="bold" />
@@ -356,12 +356,11 @@
 
     </TableLayout>
 
-    <com.google.android.gms.ads.AdView
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-7498702078465081/8239984078" />
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7498702078465081/6777253815"></com.google.android.gms.ads.AdView>
 
 </LinearLayout>

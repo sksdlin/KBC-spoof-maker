@@ -8,12 +8,23 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 public class MainActivity extends AppCompatActivity {
     //private ImageButton ibIntro1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        MobileAds.initialize(this, "ca-app-pub-7498702078465081~3837704630");
+        AdView mAdView = (AdView)(findViewById(R.id.adView));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
 
 
         ImageButton ibIntro1 = findViewById(R.id.ibIntro1);
