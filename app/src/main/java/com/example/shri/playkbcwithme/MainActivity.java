@@ -10,9 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     ImageButton ibIntro1;
@@ -49,18 +47,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, "ca-app-pub-7498702078465081~3837704630");
-        AdView mAdView = (findViewById(R.id.adView));
-        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
-
-        StartMediaPlayer();
+        startMediaPlayer();
 
         ibIntro1 = findViewById(R.id.ibIntro1);
         ibIntro1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayIntro1();
+                //PlayIntro1();
+
+                playSound(mPlayIntro1,"Introduction 1.");
             }
         });
 
@@ -68,22 +63,27 @@ public class MainActivity extends AppCompatActivity {
         ibIntro2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayIntro2();
+                playSound(mPlayIntro2,"Introduction 2.");
             }
         });
+
+
+
+
 
         ibNextQuestion = findViewById(R.id.ibNextAnswer);
         ibNextQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               PlayNextQuestion();
+               playSound(mPlayNextQuestion,"Next Question.");
             }
         });
         ibSuspense1 = findViewById(R.id.ibSuspense1);
         ibSuspense1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlaySuspense1();
+                playSound(mPlaySuspense1,"Suspense 1.");
+
             }
         });
 
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         ibSuspense2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlaySuspense2();
+                playSound(mPlaySuspense2,"Suspense 2.");
             }
         });
 
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         ibSuspense3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlaySuspense3();
+                playSound(mPlaySuspense3,"Suspense 3.");
             }
         });
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         ibSuspense4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlaySuspense4();
+                playSound(mPlaySuspense4,"Suspense 4.");
             }
         });
 
@@ -119,15 +119,18 @@ public class MainActivity extends AppCompatActivity {
         ibLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayLock();
+                playSound(mPlayLock,"Lock.");
             }
         });
-        //ibCorrect = (ImageButton)findViewById(R.id.ibCorrect);
+
+        ibCorrect = findViewById(R.id.ibCorrectAns);
+        ibCorrect.setClickable(false);
+
         ibIncorrect= findViewById(R.id.ibIncorrectAns);
         ibIncorrect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayIncorrect();
+                playSound(mPlayIncorrect,"Incorrect Answer.");
             }
         });
 
@@ -135,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
         ibDramatic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayDramatic();
+                playSound(mPlaySuspense1,"Dramatic.");
             }
         });
         ibPhoneAFriend =findViewById(R.id.ibPhoneAFriend);
         ibPhoneAFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayPhoneAFriend();
+                playSound(mPlayPhoneAFriend,"Phone A Friend.");
             }
         });
 
@@ -150,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
         ibHooter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayHooter();
+                playSound(mPlayHooter,"Hooter.");
             }
         });
+
 
 
 
@@ -168,17 +172,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        StartMediaPlayer();
+        startMediaPlayer();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        StartMediaPlayer();
+        startMediaPlayer();
+
     }
 
-    public void StartMediaPlayer() {
+    public void startMediaPlayer() {
         mPlayIntro1 = new MediaPlayer().create(this,R.raw.intro1);
         mPlayIntro2 = new MediaPlayer().create(this,R.raw.intro2);
         mPlayNextQuestion = new MediaPlayer().create(this,R.raw.next_question);
@@ -194,271 +199,56 @@ public class MainActivity extends AppCompatActivity {
         mPlayHooter= new MediaPlayer().create(this, R.raw.hooter);
     }
 
-    public void PlayIntro1(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayIntro1.seekTo(0);
-            mPlayIntro1.start();
-            Toast.makeText(this,"Introduction 1.",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            mPlayIntro1.seekTo(0);
-            mPlayIntro1.start();
-            Toast.makeText(this,"Introduction 1.",Toast.LENGTH_SHORT).show();
 
+    public void playSound(MediaPlayer sound,String toastMessage) {
+        try {
+            stopAllMediaPlayback();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
+        sound.start();
+        Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT).show();
     }
 
+    void stopAllMediaPlayback() throws IOException {
 
-    public void PlayIntro2(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayIntro2.seekTo(0);
-            mPlayIntro2.start();
-            Toast.makeText(this,"Introduction 2.",Toast.LENGTH_SHORT).show();
-        }
-       else{
-            mPlayIntro2.seekTo(0);
-            mPlayIntro2.start();
-            Toast.makeText(this,"Introduction 2.",Toast.LENGTH_SHORT).show();
+        mPlayIntro1.stop();
+        mPlayIntro1.prepare();
+        //mPlayIntro1.
 
-        }
+        mPlayIntro2.stop();
+        mPlayIntro2.prepare();
 
 
-    }
-
-    public void PlayNextQuestion(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayNextQuestion.seekTo(0);
-            mPlayNextQuestion.start();
-            Toast.makeText(this,"Next Question.",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            mPlayNextQuestion.seekTo(0);
-            mPlayNextQuestion.start();
-            Toast.makeText(this,"Next Question.",Toast.LENGTH_SHORT).show();
+        mPlayNextQuestion.stop();
+        mPlayNextQuestion.prepare();
 
 
-        }
-    }
+        mPlaySuspense1.stop();
+        mPlaySuspense1.prepare();
 
-    public void PlaySuspense1(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlaySuspense1.seekTo(0);
-            mPlaySuspense1.start();
-            Toast.makeText(this,"Suspense 1",Toast.LENGTH_SHORT).show();
+        mPlaySuspense2.stop();
+        mPlaySuspense2.prepare();
 
-        } else {
-            mPlaySuspense1.seekTo(0);
-            mPlaySuspense1.start();
-            Toast.makeText(this,"Suspense 1",Toast.LENGTH_SHORT).show();
-        }
+        mPlaySuspense3.stop();
+        mPlaySuspense3.prepare();
 
-        /*
-        if(!mPlaySuspense1.isPlaying()){
-            mPlaySuspense1.start();
-            Toast.makeText(this,"Suspense 1",Toast.LENGTH_SHORT).show();
-        }else{
-            mPlaySuspense1.seekTo(0);
+        mPlaySuspense4.stop();
+        mPlaySuspense4.prepare();
 
-        }
-        */
-    }
+        mPlayLock.stop();
+        mPlayLock.prepare();
 
-    public void PlaySuspense2(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlaySuspense2.seekTo(0);
-            mPlaySuspense2.start();
-            Toast.makeText(this,"Suspense 2",Toast.LENGTH_SHORT).show();
+       // mPlayIncorrect.seekTo(mPlayCorrect.seekTo(length));
 
-        } else {
-            mPlaySuspense2.seekTo(0);
-            mPlaySuspense2.start();
-            Toast.makeText(this,"Suspense 2",Toast.LENGTH_SHORT).show();
-        }
-/*
-        if(!mPlaySuspense2.isPlaying()){
-            mPlaySuspense2.start();
-            Toast.makeText(this,"Suspense 2",Toast.LENGTH_SHORT).show();
-        }else{
-            mPlaySuspense2.seekTo(0);
+        mPlayDramatic.stop();
+        mPlayDramatic.prepare();
 
-        }
-        */
-    }
+        mPlayPhoneAFriend.stop();
+        mPlayPhoneAFriend.prepare();
 
-    public void PlaySuspense3(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlaySuspense3.seekTo(0);
-            mPlaySuspense3.start();
-            Toast.makeText(this,"Suspense 3",Toast.LENGTH_SHORT).show();
-        }else{
-            mPlaySuspense3.seekTo(0);
-            mPlaySuspense3.start();
-            Toast.makeText(this,"Suspense 3",Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public void PlaySuspense4(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlaySuspense4.seekTo(0);
-            mPlaySuspense4.start();
-            Toast.makeText(this,"Suspense 4",Toast.LENGTH_SHORT).show();
-        } else {
-            mPlaySuspense4.seekTo(0);
-            mPlaySuspense4.start();
-            Toast.makeText(this,"Suspense 4",Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
-
-    public void PlayLock(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayLock.seekTo(0);
-            mPlayLock.start();
-            Toast.makeText(this,"Lock The Answer",Toast.LENGTH_SHORT).show();
-        }else{
-            mPlayLock.seekTo(0);
-            mPlayLock.start();
-            Toast.makeText(this,"Lock The Answer.",Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
-
-/*
-    public void PlayCorrect(){
-
-        mPlay = new MediaPlayer().create(this,R.raw.);
-        mPlay.start();
-        Toast.makeText(this,"Introduction 1.",Toast.LENGTH_SHORT).show();
-
-    }
-    */
-
-
-    public void PlayIncorrect(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayIncorrect.seekTo(0);
-            mPlayIncorrect.start();
-            Toast.makeText(this,"Incorrect Answer.",Toast.LENGTH_SHORT).show();
-        }else{
-            mPlayIncorrect.seekTo(0);
-            mPlayIncorrect.start();
-            Toast.makeText(this,"Incorrect Answer.",Toast.LENGTH_SHORT).show();
-        }
-
-
-
-    }
-
-
-    public void PlayDramatic(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayDramatic.seekTo(0);
-            mPlayDramatic.start();
-            Toast.makeText(this,"Dramatic Tone.",Toast.LENGTH_SHORT).show();
-        } else {
-            mPlayDramatic.seekTo(0);
-            mPlayDramatic.start();
-            Toast.makeText(this,"Dramatic Tone.",Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
-    public void PlayPhoneAFriend(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayPhoneAFriend.seekTo(0);
-            mPlayPhoneAFriend.start();
-            Toast.makeText(this,"Phone A Friend.",Toast.LENGTH_SHORT).show();
-        } else {
-            mPlayPhoneAFriend.seekTo(0);
-            mPlayPhoneAFriend.start();
-            Toast.makeText(this,"Phone A Friend.",Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public void PlayHooter(){
-        if (IsAnyMediaPlaying()){
-            StopAllMediaPlayback();
-            mPlayHooter.seekTo(0);
-            mPlayHooter.start();
-            Toast.makeText(this,"Hooter.",Toast.LENGTH_SHORT).show();
-        } else {
-            mPlayHooter.seekTo(0);
-            mPlayHooter.start();
-            Toast.makeText(this,"Hooter.",Toast.LENGTH_SHORT).show();
-        }
-
-
-
-    }
-
-    boolean IsAnyMediaPlaying (){
-        return mPlayIntro1.isPlaying() || mPlayIntro2.isPlaying() ||
-                mPlayNextQuestion.isPlaying() ||
-                mPlaySuspense1.isPlaying() || mPlaySuspense2.isPlaying() ||
-                mPlaySuspense3.isPlaying() || mPlaySuspense4.isPlaying() ||
-                mPlayLock.isPlaying() || mPlayIncorrect.isPlaying() ||
-                mPlayDramatic.isPlaying() || mPlayPhoneAFriend.isPlaying() || mPlayHooter.isPlaying();
-    }
-
-    void StopAllMediaPlayback(){
-        int length;
-
-        length = mPlayIntro1.getDuration();
-        mPlayIntro1.seekTo(length);
-
-        length = mPlayIntro2.getDuration();
-        mPlayIntro2.seekTo(length);
-
-        length = mPlayNextQuestion.getDuration();
-        mPlayNextQuestion.seekTo(length);
-
-        length = mPlaySuspense1.getDuration();
-        mPlaySuspense1.seekTo(length);
-
-        length = mPlaySuspense2.getDuration();
-        mPlaySuspense2.seekTo(length);
-
-        length = mPlaySuspense3.getDuration();
-        mPlaySuspense3.seekTo(length);
-
-        length = mPlaySuspense4.getDuration();
-        mPlaySuspense4.seekTo(length);
-
-        length = mPlayLock.getDuration();
-        mPlayLock.seekTo(length);
-
-
-        //mPlayCorrect.seekTo(length);
-       // mPlayIncorrect.seekTo(length);
-
-        length = mPlayDramatic.getDuration();
-        mPlayDramatic.seekTo(length);
-
-
-        length = mPlayPhoneAFriend.getDuration();
-        mPlayPhoneAFriend.seekTo(length);
-
-        length = mPlayHooter.getDuration();
-        mPlayHooter.seekTo(length);
+        mPlayHooter.stop();
+        mPlayHooter.prepare();
 
 
     }
